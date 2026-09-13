@@ -1,4 +1,4 @@
-<div class="toasts" role="status" aria-live="polite">
+<div class="toasts">
   @for (toast of toasts(); track toast.id) {
     <div [class]="'toast toast--' + toast.type">
       <span class="toast__message">{{ toast.message }}</span>

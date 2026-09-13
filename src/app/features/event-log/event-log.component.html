@@ -1,5 +1,5 @@
-<div class="event-log" role="log" aria-live="polite">
-  <h3 class="event-log__title">Журнал событий (последние 20)</h3>
+<div class="event-log">
+  <h3 class="event-log__title">Журнал событий</h3>
   <div class="event-log__list">
     @for (log of logs(); track log.id) {
       <div [class]="itemClass(log.type)">

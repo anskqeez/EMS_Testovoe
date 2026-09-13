@@ -2,237 +2,237 @@
 @use 'fonts' as *;
 
 .conveyor {
-  display: flex;
-  align-items: stretch;
-  gap: 18px;
-  padding: 26px 22px;
-  min-width: 0;
-  border-radius: 20px;
-  background:
-    radial-gradient(900px 220px at 50% -60px, rgba(56, 189, 248, 0.07), transparent),
-    linear-gradient(180deg, #161c2a 0%, #121722 100%);
-  border: 1px solid var(--border);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
-
-  &__sensor {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 16px 12px;
-    border-radius: 999px;
-    border: 1px solid;
-    transition: all var(--transition);
-
-    &--in {
-      color: var(--accent);
-      border-color: rgba(56, 189, 248, 0.35);
-      background: rgba(56, 189, 248, 0.08);
-    }
-
-    &--out {
-      color: #64748b;
-      border-color: #2c3854;
-      background: rgba(100, 116, 139, 0.08);
-    }
-
-    &--active {
-      color: var(--danger);
-      border-color: rgba(248, 113, 113, 0.5);
-      background: rgba(248, 113, 113, 0.12);
-      box-shadow: 0 0 18px rgba(248, 113, 113, 0.25);
-    }
-  }
-
-  &__sensor-led {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: currentColor;
-    box-shadow: 0 0 12px currentColor;
-    animation: led-pulse 1.6s ease-in-out infinite;
-  }
-
-  &__sensor-label {
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
-    font-size: $font-2xs;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-  }
-
-  &__belt {
-    flex: 1;
-    min-width: 0;
-    overflow-x: auto;
-    scroll-snap-type: x proximity;
-    -webkit-overflow-scrolling: touch;
-    display: flex;
-    gap: 14px;
-    padding: 16px;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 176px;
-    border-radius: 16px;
-    border: 1px solid #222c40;
-    background:
-      repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0 2px, transparent 2px 26px),
-      linear-gradient(180deg, #0d1119 0%, #10151f 100%);
-    box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.6);
-
-    > * {
-      scroll-snap-align: center;
-    }
-  }
-
-  &__slot {
-    flex: 1 1 140px;
-    min-width: 120px;
-    max-width: 220px;
-    min-height: 117px;
-    display: grid;
-    place-items: center;
-    border: 1.5px dashed #2c3854;
-    border-radius: var(--radius);
-    background: rgba(255, 255, 255, 0.015);
-    color: #3b4a6b;
-  }
-
-  &__slot-number {
-    font-family: 'JetBrains Mono', 'Consolas', monospace;
-    font-size: $font-m;
-  }
-}
-
-@keyframes led-pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.35;
-  }
-}
-
-@include tablet-xl {
-  .conveyor {
-    gap: 14px;
-    padding: 20px 16px;
-
-    &__belt {
-      gap: 12px;
-      padding: 12px;
-    }
-
-    &__slot {
-      min-height: 140px;
-    }
-  }
-}
-
-@include tablet {
-  .conveyor {
-    flex-direction: column;
     align-items: stretch;
-    gap: 12px;
-    padding: 14px;
+    gap: 18px;
+    padding: 26px 22px;
+    min-width: 0;
+    border-radius: 20px;
+    background:
+        radial-gradient(900px 220px at 50% -60px, rgba(56, 189, 248, 0.07), transparent),
+        linear-gradient(180deg, #161c2a 0%, #121722 100%);
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
 
     &__sensor {
-      flex-direction: row;
-      justify-content: center;
-      padding: 8px 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 16px 12px;
+        border-radius: 999px;
+        border: 1px solid;
+        transition: all var(--transition);
+
+        &--in {
+            color: var(--accent);
+            border-color: rgba(56, 189, 248, 0.35);
+            background: rgba(56, 189, 248, 0.08);
+        }
+
+        &--out {
+            color: #64748b;
+            border-color: #2c3854;
+            background: rgba(100, 116, 139, 0.08);
+        }
+
+        &--active {
+            color: var(--danger);
+            border-color: rgba(248, 113, 113, 0.5);
+            background: rgba(248, 113, 113, 0.12);
+            box-shadow: 0 0 18px rgba(248, 113, 113, 0.25);
+        }
+    }
+
+    &__sensor-led {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+        box-shadow: 0 0 12px currentColor;
+        animation: led-pulse 1.6s ease-in-out infinite;
     }
 
     &__sensor-label {
-      writing-mode: horizontal-tb;
-      letter-spacing: 2px;
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        font-size: $font-2xs;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
     }
 
     &__belt {
-      flex-direction: column;
-      overflow-x: visible;
-      min-height: 0;
-      gap: 12px;
-      padding: 12px;
-      background:
-        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.03) 0 2px, transparent 2px 26px),
-        linear-gradient(90deg, #0d1119 0%, #10151f 100%);
+        flex: 1;
+        min-width: 0;
+        overflow-x: auto;
+        scroll-snap-type: x proximity;
+        -webkit-overflow-scrolling: touch;
+        display: flex;
+        gap: 14px;
+        padding: 16px;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 176px;
+        border-radius: 16px;
+        border: 1px solid #222c40;
+        background:
+            repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0 2px, transparent 2px 26px),
+            linear-gradient(180deg, #0d1119 0%, #10151f 100%);
+        box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.6);
+
+        > * {
+            scroll-snap-align: center;
+        }
     }
 
     &__slot {
-      flex: 0 0 auto;
-      width: 100%;
-      min-width: 0;
-      max-width: none;
-      min-height: 84px;
+        flex: 1 1 140px;
+        min-width: 120px;
+        max-width: 220px;
+        min-height: 117px;
+        display: grid;
+        place-items: center;
+        border: 1.5px dashed #2c3854;
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.015);
+        color: #3b4a6b;
     }
-  }
 
-  ::view-transition-old(.product-card) {
-    animation-name: slide-out-down;
-  }
-  ::view-transition-new(.product-card) {
-    animation-name: slide-in-up;
-  }
+    &__slot-number {
+        font-family: 'JetBrains Mono', 'Consolas', monospace;
+        font-size: $font-m;
+    }
+}
+
+@keyframes led-pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.35;
+    }
+}
+
+@include tablet-xl {
+    .conveyor {
+        gap: 14px;
+        padding: 20px 16px;
+
+        &__belt {
+            gap: 12px;
+            padding: 12px;
+        }
+    }
+}
+
+@include tablet {
+    .conveyor {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 14px;
+
+        &__sensor {
+            flex-direction: row;
+            justify-content: center;
+            padding: 8px 14px;
+        }
+
+        &__sensor-label {
+            writing-mode: horizontal-tb;
+            letter-spacing: 2px;
+        }
+
+        &__belt {
+            flex-direction: column;
+            overflow-x: visible;
+            min-height: 0;
+            gap: 12px;
+            padding: 12px;
+            background:
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(255, 255, 255, 0.03) 0 2px,
+                    transparent 2px 26px
+                ),
+                linear-gradient(90deg, #0d1119 0%, #10151f 100%);
+        }
+
+        &__slot {
+            flex: 0 0 auto;
+            width: 100%;
+            min-width: 0;
+            max-width: none;
+            min-height: 84px;
+        }
+    }
+
+    ::view-transition-old(.product-card) {
+        animation-name: slide-out-down;
+    }
+    ::view-transition-new(.product-card) {
+        animation-name: slide-in-up;
+    }
 }
 
 /* View Transitions API */
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation-duration: 0.3s;
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    animation-duration: 0.3s;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 ::view-transition-old(.product-card) {
-  animation: slide-out-right 0.3s ease-in forwards;
+    animation: slide-out-right 0.3s ease-in forwards;
 }
 
 ::view-transition-new(.product-card) {
-  animation: slide-in-left 0.3s ease-out forwards;
+    animation: slide-in-left 0.3s ease-out forwards;
 }
 
 @keyframes slide-out-right {
-  from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(50px);
-    opacity: 0;
-  }
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(50px);
+        opacity: 0;
+    }
 }
 
 @keyframes slide-in-left {
-  from {
-    transform: translateX(-50px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+    from {
+        transform: translateX(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
 @keyframes slide-out-down {
-  from {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateY(40px);
-    opacity: 0;
-  }
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(40px);
+        opacity: 0;
+    }
 }
 
 @keyframes slide-in-up {
-  from {
-    transform: translateY(-40px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+    from {
+        transform: translateY(-40px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }

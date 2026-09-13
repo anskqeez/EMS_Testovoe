@@ -2,269 +2,280 @@
 @use 'fonts' as *;
 
 :host {
-  display: block;
-  flex: 1 1 140px;
-  min-width: 120px;
-  max-width: 220px;
+    display: block;
+    flex: 1 1 140px;
+    min-width: 120px;
+    max-width: 220px;
 
-  // Пока меню открыто, весь хост поднимается над соседними карточками
-  &.has-open-menu {
-    z-index: 400;
-  }
-
-  @include mobile {
-    flex: 0 0 auto;
-    width: 100%;
-    min-width: 0;
-    max-width: none;
-
-    .product-card {
-      padding: 10px 12px 12px 18px;
+    // Пока меню открыто, весь хост поднимается над соседними карточками
+    &.has-open-menu {
+        z-index: 400;
     }
-  }
+
+    @include tablet {
+        flex: 0 0 auto;
+        width: 100%;
+        min-width: 0;
+        width: 100%;
+        max-width: none;
+
+        .product-card {
+            padding: 10px 12px 12px 18px;
+        }
+
+        .status-dropdown {
+            max-width: 220px;
+        }
+    }
+
+    @include mobile {
+        .status-dropdown {
+            max-width: unset;
+        }
+    }
 }
 
 .product-card {
-  --status-color: var(--accent);
-
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 12px 12px 14px 18px;
-  border-radius: var(--radius);
-  background: linear-gradient(165deg, #222b3f 0%, #1a2130 100%);
-  border: 1px solid #2d3a55;
-  box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  transition:
-    transform var(--transition),
-    box-shadow var(--transition);
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 10px;
-    bottom: 10px;
-    left: 6px;
-    width: 3px;
-    border-radius: 3px;
-    background: var(--status-color);
-    box-shadow: 0 0 10px var(--status-color);
-    transition:
-      background var(--transition),
-      box-shadow var(--transition);
-  }
-
-  &:hover {
-    border-color: #3b4a6b;
-    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.45);
-  }
-
-  &--in-queue {
     --status-color: var(--accent);
-  }
-  &--checked {
-    --status-color: var(--success);
-  }
-  &--rejected {
-    --status-color: var(--danger);
-  }
 
-  &__header {
+    position: relative;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-  }
-
-  &__id {
-    font-family: 'JetBrains Mono', 'Consolas', monospace;
-    font-weight: 700;
-    font-size: $font-s;
-    letter-spacing: 0.5px;
-    color: var(--status-color);
-  }
-
-  &__remove {
-    display: grid;
-    place-items: center;
-    width: 22px;
-    height: 22px;
-    flex-shrink: 0;
-    border: none;
-    border-radius: 6px;
-    background: rgba(248, 113, 113, 0.12);
-    color: var(--danger);
-    font-size: $font-2xs;
-    line-height: 1;
-    cursor: pointer;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 12px 14px 18px;
+    border-radius: var(--radius);
+    background: linear-gradient(165deg, #222b3f 0%, #1a2130 100%);
+    border: 1px solid #2d3a55;
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
     transition:
-      background var(--transition),
-      transform var(--transition);
+        transform var(--transition),
+        box-shadow var(--transition);
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 10px;
+        bottom: 10px;
+        left: 6px;
+        width: 3px;
+        border-radius: 3px;
+        background: var(--status-color);
+        box-shadow: 0 0 10px var(--status-color);
+        transition:
+            background var(--transition),
+            box-shadow var(--transition);
+    }
 
     &:hover {
-      background: rgba(248, 113, 113, 0.28);
-      transform: scale(1.1);
+        border-color: #3b4a6b;
+        box-shadow: 0 12px 26px rgba(0, 0, 0, 0.45);
     }
-  }
 
-  &__time {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: $font-xs;
-    color: var(--text-1);
-    font-variant-numeric: tabular-nums;
-  }
+    &--in-queue {
+        --status-color: var(--accent);
+    }
+    &--checked {
+        --status-color: var(--success);
+    }
+    &--rejected {
+        --status-color: var(--danger);
+    }
 
-  &__time-icon {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #3b4a6b;
-  }
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    &__id {
+        font-family: 'JetBrains Mono', 'Consolas', monospace;
+        font-weight: 700;
+        font-size: $font-s;
+        letter-spacing: 0.5px;
+        color: var(--status-color);
+    }
+
+    &__remove {
+        display: grid;
+        place-items: center;
+        width: 22px;
+        height: 22px;
+        flex-shrink: 0;
+        border: none;
+        border-radius: 6px;
+        background: rgba(248, 113, 113, 0.12);
+        color: var(--danger);
+        font-size: $font-2xs;
+        line-height: 1;
+        cursor: pointer;
+        transition:
+            background var(--transition),
+            transform var(--transition);
+
+        &:hover {
+            background: rgba(248, 113, 113, 0.28);
+            transform: scale(1.1);
+        }
+    }
+
+    &__time {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: $font-xs;
+        color: var(--text-1);
+        font-variant-numeric: tabular-nums;
+    }
+
+    &__time-icon {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #3b4a6b;
+    }
 }
 
 /* Блок выпадающего списка статусов */
 .status-dropdown {
-  position: relative;
+    position: relative;
 
-  &__trigger {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 7px 10px;
-    border-radius: 8px;
-    border: 1px solid #33405e;
-    background: rgba(11, 14, 20, 0.6);
-    color: var(--text-0);
-    font-size: $font-xs;
-    cursor: pointer;
-    transition:
-      border-color var(--transition),
-      background var(--transition);
+    &__trigger {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 10px;
+        border-radius: 8px;
+        border: 1px solid #33405e;
+        background: rgba(11, 14, 20, 0.6);
+        color: var(--text-0);
+        font-size: $font-xs;
+        cursor: pointer;
+        transition:
+            border-color var(--transition),
+            background var(--transition);
 
-    &:hover,
-    &:focus-visible {
-      border-color: var(--status-color);
-      outline: none;
-    }
-  }
-
-  &__dot {
-    width: 8px;
-    height: 8px;
-    flex-shrink: 0;
-    border-radius: 50%;
-    background: var(--status-color);
-    box-shadow: 0 0 8px var(--status-color);
-    transition:
-      background var(--transition),
-      box-shadow var(--transition);
-  }
-
-  &__text {
-    flex: 1;
-    text-align: left;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  &__arrow {
-    color: #64748b;
-    font-size: $font-2xs;
-    transition: transform var(--transition);
-  }
-
-  &--open &__arrow {
-    transform: rotate(180deg);
-  }
-
-  &__menu {
-    position: fixed;
-    z-index: 300;
-    margin: 0;
-    padding: 4px;
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    border-radius: 10px;
-    background: #1c2436;
-    border: 1px solid #2d3a55;
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
-    transform-origin: top center;
-    animation: menu-in 0.18s ease-out;
-  }
-
-  &__option {
-    // Цвет статуса опции: точка и галочка наследуют через переменную
-    --option-color: var(--text-1);
-
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 7px 9px;
-    border-radius: 7px;
-    font-size: $font-xs;
-    color: var(--text-0);
-    white-space: nowrap;
-    cursor: pointer;
-    transition: background 0.15s ease;
-
-    &:hover,
-    &:focus-visible {
-      background: rgba(255, 255, 255, 0.06);
-      outline: none;
+        &:hover,
+        &:focus-visible {
+            border-color: var(--status-color);
+            outline: none;
+        }
     }
 
-    &--active {
-      background: rgba(255, 255, 255, 0.04);
-      font-weight: 600;
+    &__dot {
+        width: 8px;
+        height: 8px;
+        flex-shrink: 0;
+        border-radius: 50%;
+        background: var(--status-color);
+        box-shadow: 0 0 8px var(--status-color);
+        transition:
+            background var(--transition),
+            box-shadow var(--transition);
     }
 
-    &--in-queue {
-      --option-color: var(--accent);
+    &__text {
+        flex: 1;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
-    &--checked {
-      --option-color: var(--success);
+
+    &__arrow {
+        color: #64748b;
+        font-size: $font-2xs;
+        transition: transform var(--transition);
     }
-    &--rejected {
-      --option-color: var(--danger);
+
+    &--open &__arrow {
+        transform: rotate(180deg);
     }
-  }
 
-  &__option-dot {
-    width: 7px;
-    height: 7px;
-    flex-shrink: 0;
-    border-radius: 50%;
-    background: var(--option-color);
-    box-shadow: 0 0 6px var(--option-color);
-  }
+    &__menu {
+        position: fixed;
+        z-index: 300;
+        margin: 0;
+        padding: 4px;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        border-radius: 10px;
+        background: #1c2436;
+        border: 1px solid #2d3a55;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+        transform-origin: top center;
+        animation: menu-in 0.18s ease-out;
+    }
 
-  &__option-text {
-    flex: 1;
-  }
+    &__option {
+        // Цвет статуса опции: точка и галочка наследуют через переменную
+        --option-color: var(--text-1);
 
-  &__check {
-    margin-left: auto;
-    font-size: $font-2xs;
-    color: var(--option-color);
-  }
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 9px;
+        border-radius: 7px;
+        font-size: $font-xs;
+        color: var(--text-0);
+        white-space: nowrap;
+        cursor: pointer;
+        transition: background 0.15s ease;
+
+        &:hover,
+        &:focus-visible {
+            background: rgba(255, 255, 255, 0.06);
+            outline: none;
+        }
+
+        &--active {
+            background: rgba(255, 255, 255, 0.04);
+            font-weight: 600;
+        }
+
+        &--in-queue {
+            --option-color: var(--accent);
+        }
+        &--checked {
+            --option-color: var(--success);
+        }
+        &--rejected {
+            --option-color: var(--danger);
+        }
+    }
+
+    &__option-dot {
+        width: 7px;
+        height: 7px;
+        flex-shrink: 0;
+        border-radius: 50%;
+        background: var(--option-color);
+        box-shadow: 0 0 6px var(--option-color);
+    }
+
+    &__option-text {
+        flex: 1;
+    }
+
+    &__check {
+        margin-left: auto;
+        font-size: $font-2xs;
+        color: var(--option-color);
+    }
 }
 
 @keyframes menu-in {
-  from {
-    opacity: 0;
-    transform: translateY(-6px) scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(-6px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
