@@ -1,0 +1,115 @@
+@use 'breakpoints' as *;
+@use 'fonts' as *;
+
+.toasts {
+  position: fixed;
+  top: 76px;
+  right: 24px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.toast {
+  --toast-color: var(--accent);
+
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 260px;
+  max-width: 360px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #1c2436;
+  border: 1px solid #2d3a55;
+  border-left: 3px solid var(--toast-color);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+  animation: toast-in 0.25s ease-out;
+
+  &::before {
+    font-size: $font-s;
+    color: var(--toast-color);
+  }
+
+  &--info {
+    --toast-color: var(--accent);
+
+    &::before {
+      content: 'ℹ';
+    }
+  }
+
+  &--success {
+    --toast-color: var(--success);
+
+    &::before {
+      content: '✔';
+    }
+  }
+
+  &--warning {
+    --toast-color: var(--warning);
+
+    &::before {
+      content: '⚠';
+    }
+  }
+
+  &--danger {
+    --toast-color: var(--danger);
+
+    &::before {
+      content: '✖';
+    }
+  }
+
+  &__message {
+    flex: 1;
+    font-size: $font-s;
+    color: var(--text-0);
+  }
+
+  &__close {
+    border: none;
+    background: transparent;
+    color: var(--text-1);
+    font-size: $font-2xs;
+    cursor: pointer;
+    padding: 4px;
+    transition: color var(--transition);
+
+    &:hover {
+      color: var(--text-0);
+    }
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@include tablet {
+  .toasts {
+    top: auto;
+    bottom: 14px;
+    left: 14px;
+    right: 14px;
+    align-items: stretch;
+  }
+
+  .toast {
+    min-width: 0;
+    max-width: none;
+    width: 100%;
+  }
+}

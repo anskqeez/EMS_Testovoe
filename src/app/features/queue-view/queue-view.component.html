@@ -1,0 +1,34 @@
+<div class="conveyor">
+  <div class="conveyor__sensor conveyor__sensor--in">
+    <span class="conveyor__sensor-led"></span>
+    <span class="conveyor__sensor-label">Вход</span>
+  </div>
+
+  <app-waiting-zone [waiting]="waiting()" (removeProduct)="onRemove($event)" />
+
+  <div class="conveyor__belt">
+    @for (slot of belt(); track $index) {
+      @if (slot) {
+        <app-product-card
+          [product]="slot"
+          [style.view-transition-name]="'product-' + slot.id"
+          (statusChange)="onStatusChange(slot.id, $event)"
+          (remove)="onRemove(slot.id)"
+        >
+        </app-product-card>
+      } @else {
+        <div class="conveyor__slot">
+          <span class="conveyor__slot-number">{{ $index + 1 }}</span>
+        </div>
+      }
+    }
+  </div>
+
+  <div
+    class="conveyor__sensor conveyor__sensor--out"
+    [class.conveyor__sensor--active]="isExitOccupied()"
+  >
+    <span class="conveyor__sensor-led"></span>
+    <span class="conveyor__sensor-label">Отбраковка</span>
+  </div>
+</div>

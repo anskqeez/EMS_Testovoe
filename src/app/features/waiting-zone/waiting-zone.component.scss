@@ -1,0 +1,89 @@
+@use 'breakpoints' as *;
+@use 'fonts' as *;
+
+.waiting-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 84px;
+  padding: 12px 8px;
+  border-radius: 12px;
+  outline: 1px dashed #2c3854;
+  background: rgba(56, 189, 248, 0.04);
+  transition:
+    outline-color var(--transition),
+    background var(--transition);
+
+  &--filled {
+    outline-color: rgba(56, 189, 248, 0.4);
+    background: rgba(56, 189, 248, 0.08);
+  }
+
+  &__title {
+    font-size: $font-2xs;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-1);
+  }
+
+  &__chips {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: stretch;
+  }
+
+  &__chip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    padding: 4px 8px;
+    border-radius: 7px;
+    background: rgba(11, 14, 20, 0.6);
+    border: 1px solid #33405e;
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    font-size: $font-xs;
+    color: var(--accent);
+  }
+
+  &__chip-remove {
+    border: none;
+    background: transparent;
+    color: var(--text-1);
+    font-size: $font-2xs;
+    cursor: pointer;
+    padding: 2px;
+    transition: color var(--transition);
+
+    &:hover {
+      color: var(--danger);
+    }
+  }
+
+  &__more,
+  &__empty {
+    font-size: $font-2xs;
+    color: var(--text-1);
+    text-align: center;
+  }
+}
+
+@include tablet {
+  .waiting-zone {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: 0;
+    padding: 8px 10px;
+
+    &__chips {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+}

@@ -1,0 +1,146 @@
+@use 'breakpoints' as *;
+@use 'fonts' as *;
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: rgba(22, 28, 42, 0.7);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+
+  &__info {
+    margin-left: auto;
+  }
+
+  &__indicator {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: $font-xs;
+    color: var(--text-1);
+    background: rgba(59, 74, 107, 0.25);
+    border: 1px solid #2c3854;
+    transition: all var(--transition);
+
+    &--full {
+      color: var(--danger);
+      background: rgba(248, 113, 113, 0.12);
+      border-color: rgba(248, 113, 113, 0.4);
+    }
+  }
+
+  &__add-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__hint {
+    font-size: $font-2xs;
+    color: var(--warning);
+    padding-left: 4px;
+  }
+
+  &__button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: $font-s;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease,
+      filter 0.15s ease;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      filter: brightness(1.08);
+    }
+    
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+    
+    &:disabled {
+      filter: grayscale(0.6) brightness(0.55);
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    &--primary {
+      background: linear-gradient(135deg, #38bdf8, #2563eb);
+      color: #04121f;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+    }
+
+    &--secondary {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #1f1300;
+      box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+    }
+  }
+}
+
+@include tablet-xl {
+  .controls {
+    flex-wrap: wrap;
+    gap: 12px;
+
+    &__info {
+      order: 3;
+      width: 100%;
+      margin-left: 0;
+      text-align: center;
+    }
+
+    &__add-wrap {
+      flex: 1 1 240px;
+    }
+
+    &__button {
+      justify-content: center;
+
+      &--secondary {
+        flex: 1 1 200px;
+      }
+    }
+  }
+}
+
+@include tablet {
+  .controls {
+    padding: 12px;
+
+    &__button {
+      min-height: 44px;
+    }
+  }
+}
+
+@include mobile {
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+
+    &__info {
+      order: 0;
+    }
+
+    &__add-wrap,
+    &__button--secondary {
+      flex: 0 0 auto;
+      width: 100%;
+    }
+  }
+}

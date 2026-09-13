@@ -1,0 +1,25 @@
+<div class="controls">
+  <div class="controls__info">
+    <span class="controls__indicator" [class.controls__indicator--full]="!canAddProduct()">
+      На линии: {{ lineLoad() }}/{{ maxSize }} · Ожидают: {{ waitingCount() }}
+    </span>
+  </div>
+
+  <div class="controls__add-wrap">
+    <button
+      class="controls__button controls__button--primary"
+      (click)="onAddProduct()"
+      [disabled]="!canAddProduct()"
+      [attr.title]="!canAddProduct() ? 'Буфер ожидания заполнен' : null"
+    >
+      ➕ Добавить продукт
+    </button>
+    @if (!canAddProduct()) {
+      <span class="controls__hint">Буфер полон — нажмите «Следующий такт»</span>
+    }
+  </div>
+
+  <button class="controls__button controls__button--secondary" (click)="onNextTick()">
+    Следующий такт
+  </button>
+</div>
