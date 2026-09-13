@@ -1,59 +1,139 @@
-# EmsTestovoe
+# FIFO Конвейер
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.7.
+Симулятор производственной линии на Angular: ленточный конвейер, буфер ожидания у датчика входа и журнал событий с персистентностью.
 
-## Development server
+## Быстрый старт
 
-To start a local development server, run:
-
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Требуется Node.js 20+.
 
 ```bash
-ng generate component component-name
+npm install
+ng serve   # приложение: http://localhost:4200
+ng test    # unit-тесты (Vitest)
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Анимации выполнены на нативном View Transitions API: в браузерах без его
+поддержки интерфейс работает полностью, анимации деградируют до обычной смены
+состояний.
+
+## Что умеет
+
+- FIFO-очередь: продукт выходит на линию только через голову буфера ожидания,
+  новые продукты никогда не обгоняют ожидающих;
+- такт линии: сдвиг продуктов вправо, выход у датчика отбраковки, вход головы
+  буфера на освободившийся слот;
+- статусы продуктов («В очереди» / «Проверен» / «Отбракован») через собственный
+  dropdown с клавиатурной навигацией (Tab, Enter, Escape, стрелки);
+- ручное удаление продуктов с ленты и из буфера;
+- журнал последних 20 событий;
+- персистентность: лента, буфер и журнал переживают перезагрузку страницы
+  (LocalStorage);
+- тост-уведомления о граничных событиях лимитов;
+- световая индикация событий линии: датчики входа и отбраковки вспыхивают при
+  поступлении продукта на линию и при его уходе с линии цветом судьбы
+  (зелёный — прошел, красный — отбракован).
+- адаптив от десктопа до мобильных: на узких экранах конвейер становится
+  вертикальным.
+
+## Доменная модель
+
+Три агрегата: **лента** (массив фиксированных слотов между датчиками),
+**буфер ожидания** (FIFO-очередь перед датчиком входа) и **журнал событий**.
+
+| Сущность       | Лимит | Происхождение                                                                                          |
+|----------------|-------|--------------------------------------------------------------------------------------------------------|
+| Слоты ленты    | 6     | Design-решение: длина линии, при которой карточки остаются читаемыми. Задано константой `ConveyorBeltService.MAX_SIZE` |
+| Буфер ожидания | 6     | Project-решение: симметрично ленте — блокировка добавления и переполнение буфера наступают предсказуемо, а зона ожидания не доминирует над интерфейсом |
+| Журнал событий | 20    | Ограничение ТЗ: хранятся последние 20 событий                                                           |
+
+Все лимиты — константы своих агрегатов (`MAX_SIZE`, `MAX_ENTRIES`), поэтому
+«длину линии» или вместимость буфера можно изменить в одну строку без правок логики.
+
+Схема такта:
+
+```
+ Буфер ожидания        Лента (6 слотов)
+┌───────────┐   ┌───┬───┬───┬───┬───┬───┐
+│ #a1  #b2  │   │ 1 │ 2 │ 3 │ 4 │ 5 │ 6 │──▶ отбраковка
+│ #c3       │──▶└──────┴──────┴──────┘
+└───────────┘   вход               выход
+```
+
+Такт: продукт у выхода покидает линию → лента сдвигается вправо → голова
+буфера занимает освободившийся слот у входа.
+
+**Связка ленты и буфера — event-driven.** Слот у датчика входа освобождается
+двумя способами: тактом или ручным удалением. В обоих случаях голова буфера
+занимает его немедленно. Из этого следует инвариант: *слот 0 пуст ⇔ буфер
+пуст* — состояние «пустой вход при живой очереди» невыразимо, а новый продукт
+никогда не обгоняет ожидающих.
+
+## Архитектура
+
+```
+UI-компоненты
+  controls · queue-view · waiting-zone · product-card · event-log · toasts
+      │ читают сигналы, вызывают сценарии
+      ▼
+QueueFacadeService — сценарии use-case'ов, испускает доменные события
+      │
+      ├─▶ ConveyorBeltService    ─┐
+      ├─▶ WaitingQueueService    ─┼─ агрегаты: чистое состояние + своя персистентность
+      └─▶ EventLogService        ─┘            │
+                  │ поток событий              ▼
+                  ├─▶ журнал (EventLogComponent)        StorageService (LocalStorage)
+                  └─▶ ToastNotifierService → ToastService (тосты)
+```
+
+### Структура проекта
+
+```
+src/app/
+├── core/
+│   ├── services/
+│   │   ├── queue/
+│   │   │   ├── __tests__/              # unit-тесты домена (Vitest)
+│   │   │   ├── conveyor-belt.service.ts
+│   │   │   ├── waiting-queue.service.ts
+│   │   │   ├── event-log.service.ts
+│   │   │   └── queue-facade.service.ts
+│   │   ├── storage/storage.service.ts  # инфраструктура LocalStorage
+│   │   ├── toast.service.ts            # стек тостов (презентация)
+│   │   ├── toast-notifier.service.ts   # проекция «события → тосты»
+│   │   └── dropdown-registry.service.ts# эксклюзивность открытых меню
+│   └── utils/                          # чистые функции: геометрия меню, shortId, view transitions
+├── features/
+│   ├── controls/                       # панель управления
+│   ├── event-log/                      # журнал событий
+│   ├── queue-view/                     # конвейер: лента + датчики
+│   └── waiting-zone/                   # буфер ожидания (самостоятельная фича)
+├── shared/
+│   ├── product-card/                   # карточка продукта + dropdown статусов
+│   └── toasts/                         # презентационный стек уведомлений
+├── models/                             # Product, LogEvent, ConveyorSlot
+├── testing/                            # тест-даблы (storage stub)
+└── styles/                             # _breakpoints.scss, _fonts.scss
+```
+
+## UI/UX и стили
+
+- Адаптив по брейкпоинтам: на мобильных устройствах
+  конвейер разворачивается вертикально, тосты становятся snackbar'ом снизу.
+- Анимации — нативный View Transitions API без `@angular/animations`. 
+- Дизайн-токены: брейкпоинты и типографическая шкала — SCSS-переменные в
+  партиалах (`_breakpoints.scss`, `_fonts.scss`), цвета состояний —
+  CSS-переменные, разметка стилей по BEM.
+
+## Тестирование
+
+Unit-тестами на Vitest покрыт доменный слой: агрегаты ленты, буфера и журнала, фасад
+очереди. Агрегаты тестируются без моков домена
+(инфраструктурный `StorageService` подменяется заглушкой), фасад проверяется
+сценарно: FIFO-порядок, лимиты, такт, инвариант слота 0, цепочки событий.
+UI-слой осознанно не покрыт: компоненты тонкие, читают сигналы и отдают
+события, их поведение проверяется ручными сценариями.
 
 ```bash
-ng generate --help
+ng test                # однократный прогон
+ng test --watch        # watch-режим во время правок
 ```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
