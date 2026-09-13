@@ -1,15 +1,15 @@
-<div class="toasts">
-  @for (toast of toasts(); track toast.id) {
-    <div [class]="'toast toast--' + toast.type">
-      <span class="toast__message">{{ toast.message }}</span>
-      <button
-        type="button"
-        class="toast__close"
-        (click)="onDismiss(toast.id)"
-        aria-label="Закрыть уведомление"
-      >
-        ✕
-      </button>
-    </div>
-  }
+<div class="toasts" role="status" aria-live="polite">
+    @for (toast of toasts(); track toast.id) {
+        <div [class]="'toast toast--' + toast.type + (toast.leaving ? ' toast--leaving' : '')">
+            <span class="toast__message">{{ toast.message }}</span>
+            <button
+                type="button"
+                class="toast__close"
+                (click)="onDismiss(toast.id)"
+                aria-label="Закрыть уведомление"
+            >
+                ✕
+            </button>
+        </div>
+    }
 </div>
