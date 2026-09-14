@@ -1,0 +1,92 @@
+@use 'breakpoints' as *;
+@use 'fonts' as *;
+
+.app {
+    &__header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        padding: 16px 28px;
+        background: rgba(11, 14, 20, 0.75);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid #1f2940;
+    }
+
+    &__title {
+        margin: 0;
+        font-size: $font-l;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+        background: var(--accent);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    &__layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 360px;
+        gap: 22px;
+        padding: 24px 28px;
+        height: calc(100vh - 65px);
+        box-sizing: border-box;
+    }
+
+    &__main {
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+        min-width: 0;
+    }
+
+    &__sidebar {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+    }
+}
+
+@include desktop {
+    .app {
+        &__layout {
+            padding: 20px 22px;
+        }
+    }
+}
+
+@include tablet-xl {
+    .app {
+        &__layout {
+            grid-template-columns: 1fr;
+            height: auto;
+            min-height: calc(100vh - 65px);
+        }
+    }
+}
+
+@include tablet {
+    .app {
+        &__header {
+            padding: 12px 16px;
+        }
+
+        &__title {
+            font-size: $font-m;
+        }
+
+        &__layout {
+            padding: 14px;
+            gap: 14px;
+        }
+
+        &__main {
+            gap: 14px;
+        }
+
+        &__sidebar {
+            height: 340px;
+        }
+    }
+}

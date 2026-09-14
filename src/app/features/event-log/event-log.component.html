@@ -1,0 +1,14 @@
+<div class="event-log">
+    <h3 class="event-log__title">Журнал событий</h3>
+    <div class="event-log__list">
+        @for (log of logs(); track log.id) {
+            <div [class]="itemClass(log.type)">
+                <span class="event-log__time">{{ log.timestamp | date: 'HH:mm:ss' }}</span>
+                <span class="event-log__type">[{{ typeLabels[log.type] }}]</span>
+                <span class="event-log__message">{{ log.message }}</span>
+            </div>
+        } @empty {
+            <div class="event-log__empty">Событий пока нет...</div>
+        }
+    </div>
+</div>

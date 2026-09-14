@@ -1,5 +1,9 @@
 {
   "printWidth": 100,
+  "trailingComma": "all",
+  "tabWidth": 4,
+  "bracketSpacing": true,
+  "semi": true,
   "singleQuote": true,
   "overrides": [
     {

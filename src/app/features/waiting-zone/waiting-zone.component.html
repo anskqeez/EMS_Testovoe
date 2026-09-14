@@ -1,0 +1,25 @@
+<div class="waiting-zone" [class.waiting-zone--filled]="waiting().length > 0">
+    <span class="waiting-zone__title">Очередь</span>
+    <div class="waiting-zone__chips">
+        @for (product of visibleWaiting(); track product.id) {
+            <div class="waiting-zone__chip">
+                <span class="waiting-zone__chip-id">#{{ shortId(product.id) }}</span>
+                <button
+                    type="button"
+                    class="waiting-zone__chip-remove"
+                    (click)="onRemove(product.id)"
+                    aria-label="Удалить из очереди"
+                    title="Удалить из очереди"
+                >
+                    ✕
+                </button>
+            </div>
+        }
+        @if (hiddenCount() > 0) {
+            <span class="waiting-zone__more">+{{ hiddenCount() }}</span>
+        }
+        @if (waiting().length === 0) {
+            <span class="waiting-zone__empty">пусто</span>
+        }
+    </div>
+</div>

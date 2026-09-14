@@ -32,7 +32,7 @@ ng test    # unit-тесты (Vitest)
 - световая индикация событий линии: датчики входа и отбраковки вспыхивают при
   поступлении продукта на линию и при его уходе с линии цветом судьбы
   (зелёный — прошел, красный — отбракован).
-- адаптив от десктопа до мобильных: на узких экранах конвейер становится
+- адаптив от десктопа до мобильных устройств: на узких экранах конвейер становится
   вертикальным.
 
 ## Доменная модель
@@ -75,7 +75,7 @@ UI-компоненты
   controls · queue-view · waiting-zone · product-card · event-log · toasts
       │ читают сигналы, вызывают сценарии
       ▼
-QueueFacadeService — сценарии use-case'ов, испускает доменные события
+QueueFacadeService — сценарии use-case'ов, испускает доменные события c payload
       │
       ├─▶ ConveyorBeltService    ─┐
       ├─▶ WaitingQueueService    ─┼─ агрегаты: чистое состояние + своя персистентность
@@ -83,6 +83,7 @@ QueueFacadeService — сценарии use-case'ов, испускает дом
                   │ поток событий              ▼
                   ├─▶ журнал (EventLogComponent)        StorageService (LocalStorage)
                   └─▶ ToastNotifierService → ToastService (тосты)
+                  └─▶ LineIndicationService → вспышки датчиков (световая индикация)
 ```
 
 ### Структура проекта
@@ -100,6 +101,7 @@ src/app/
 │   │   ├── storage/storage.service.ts  # инфраструктура LocalStorage
 │   │   ├── toast.service.ts            # стек тостов (презентация)
 │   │   ├── toast-notifier.service.ts   # проекция «события → тосты»
+│   │   ├── line-indication.service.ts  # проекция «события → свет датчиков»
 │   │   └── dropdown-registry.service.ts# эксклюзивность открытых меню
 │   └── utils/                          # чистые функции: геометрия меню, shortId, view transitions
 ├── features/

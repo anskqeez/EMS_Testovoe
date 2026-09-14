@@ -1,0 +1,16 @@
+<header class="app__header">
+    <h1 class="app__title">{{ title }}</h1>
+</header>
+
+<main class="app__layout">
+    <section class="app__main">
+        <app-controls></app-controls>
+        <app-queue-view></app-queue-view>
+    </section>
+
+    <aside class="app__sidebar">
+        <app-event-log></app-event-log>
+    </aside>
+</main>
+
+<app-toasts />

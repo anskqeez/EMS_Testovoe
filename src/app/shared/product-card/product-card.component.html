@@ -1,0 +1,67 @@
+<div [class]="cardClass()">
+    <header class="product-card__header">
+        <span class="product-card__id">#{{ shortId(product().id) }}</span>
+        <button
+            type="button"
+            class="product-card__remove"
+            (click)="onRemove()"
+            aria-label="Удалить продукт"
+            title="Удалить продукт"
+        >
+            ✕
+        </button>
+    </header>
+
+    <div class="product-card__time">
+        <span class="product-card__time-icon"></span>
+        <span>{{ product().entryTime | date: 'HH:mm:ss' }}</span>
+    </div>
+
+    <div class="status-dropdown" [class.status-dropdown--open]="isDropdownOpen()">
+        <button
+            type="button"
+            class="status-dropdown__trigger"
+            (click)="toggleDropdown($event)"
+            (keydown.escape)="closeDropdown()"
+            [attr.aria-expanded]="isDropdownOpen()"
+            aria-haspopup="listbox"
+            aria-label="Статус продукта"
+        >
+            <span class="status-dropdown__dot"></span>
+            <span class="status-dropdown__text">{{ statusLabels[product().status] }}</span>
+            <span class="status-dropdown__arrow">▾</span>
+        </button>
+
+        @if (isDropdownOpen() && menuPosition(); as pos) {
+            <ul
+                #statusMenu
+                class="status-dropdown__menu"
+                role="listbox"
+                aria-label="Выбор статуса"
+                [style.top.px]="pos.top"
+                [style.left.px]="pos.left"
+                [style.width.px]="pos.width"
+            >
+                @for (status of statuses; track status; let i = $index) {
+                    <li
+                        #statusOption
+                        [class]="optionClass(status)"
+                        role="option"
+                        tabindex="0"
+                        [attr.aria-selected]="status === product().status"
+                        (click)="selectStatus(status)"
+                        (keydown)="onOptionKeydown(i, $event)"
+                        (keydown.enter)="selectStatus(status)"
+                        (keydown.escape)="closeDropdown()"
+                    >
+                        <span class="status-dropdown__option-dot"></span>
+                        <span class="status-dropdown__option-text">{{ statusLabels[status] }}</span>
+                        @if (status === product().status) {
+                            <span class="status-dropdown__check">✓</span>
+                        }
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+</div>
