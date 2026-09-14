@@ -6,7 +6,6 @@ export interface Toast {
     id: number;
     message: string;
     type: ToastType;
-    /** Тост проигрывает анимацию ухода и будет удалён из стека вторым этапом */
     leaving: boolean;
 }
 
@@ -15,10 +14,8 @@ export interface Toast {
 })
 export class ToastService {
     private readonly SHOW_DURATION = 4000;
-
-    /** Должно совпадать с длительностью toast-out в toasts.component.scss */
+    // Должно совпадать с длительностью toast-out в toasts.component.scss
     private readonly LEAVE_DURATION = 250;
-
     private readonly MAX_STACK = 4;
 
     private counter = 0;
@@ -34,18 +31,13 @@ export class ToastService {
         setTimeout(() => this.hide(id), this.SHOW_DURATION);
     }
 
-    /** Ручное закрытие из UI: тот же мягкий уход, что и по таймауту */
     public dismiss(id: number): void {
         this.hide(id);
     }
 
-    /**
-     * Двухфазное удаление: сначала флажок leaving (элемент проигрывает
-     * exit-анимацию), затем удаление из стека. Повторный hide игнорируем,
-     * чтобы таймаут и клик по крестику не запускали уход дважды
-     */
     private hide(id: number): void {
         const toast = this._toasts().find((item) => item.id === id);
+
         if (!toast || toast.leaving) return;
 
         this._toasts.update((list) =>

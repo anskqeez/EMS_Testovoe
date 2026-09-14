@@ -1,95 +1,95 @@
 @use 'fonts' as *;
 
 .event-log {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  max-height: 600px;
-  padding: 18px;
-  border-radius: 16px;
-  background: rgba(22, 28, 42, 0.7);
-  border: 1px solid var(--border);
-  backdrop-filter: blur(10px);
-
-  &__title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 0 0 14px;
-    font-size: $font-s;
-    font-weight: 600;
-
-    &::before {
-      content: '';
-      width: 8px;
-      height: 8px;
-      border-radius: 2px;
-      background: var(--accent);
-      box-shadow: 0 0 10px var(--accent);
-    }
-  }
-
-  &__list {
-    flex: 1;
-    overflow-y: auto;
-    min-height: 0;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    padding-right: 4px;
-    font-family: 'JetBrains Mono', 'Consolas', monospace;
-    font-size: $font-xs;
-  }
+    height: 100%;
+    max-height: 600px;
+    padding: 18px;
+    border-radius: 16px;
+    background: rgba(22, 28, 42, 0.7);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(10px);
 
-  &__item {
-    display: grid;
-    grid-template-columns: auto auto 1fr;
-    gap: 8px;
-    padding: 6px 10px;
-    border-radius: 8px;
-    background: rgba(11, 14, 20, 0.5);
-    border-left: 2px solid transparent;
-    flex-shrink: 0;
+    &__title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 14px;
+        font-size: $font-s;
+        font-weight: 600;
 
-    &--added {
-      border-left-color: var(--success);
+        &::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+        }
     }
-    &--entered {
-      border-left-color: #a78bfa;
-    }
-    &--status {
-      border-left-color: var(--warning);
-    }
-    &--removed {
-      border-left-color: var(--danger);
-    }
-    &--tick {
-      border-left-color: var(--accent);
-    }
-    &--warning {
-      border-left-color: var(--warning);
-    }
-    &--buffer-full {
-      border-left-color: var(--warning);
-    }
-    &--buffer-freed {
-      border-left-color: var(--success);
-    }
-  }
 
-  &__time {
-    color: var(--text-1);
-  }
-  &__type {
-    font-weight: 700;
-  }
-  &__message {
-    color: var(--text-0);
-  }
+    &__list {
+        flex: 1;
+        overflow-y: auto;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding-right: 4px;
+        font-family: 'JetBrains Mono', 'Consolas', monospace;
+        font-size: $font-xs;
+    }
 
-  &__empty {
-    color: var(--text-1);
-    text-align: center;
-    padding: 20px;
-  }
+    &__item {
+        display: grid;
+        grid-template-columns: auto auto 1fr;
+        gap: 8px;
+        padding: 6px 10px;
+        border-radius: 8px;
+        background: rgba(11, 14, 20, 0.5);
+        border-left: 2px solid transparent;
+        flex-shrink: 0;
+
+        &--added {
+            border-left-color: var(--success);
+        }
+        &--entered {
+            border-left-color: #a78bfa;
+        }
+        &--status {
+            border-left-color: var(--warning);
+        }
+        &--removed {
+            border-left-color: var(--danger);
+        }
+        &--tick {
+            border-left-color: var(--accent);
+        }
+        &--warning {
+            border-left-color: var(--warning);
+        }
+        &--buffer-full {
+            border-left-color: var(--warning);
+        }
+        &--buffer-freed {
+            border-left-color: var(--success);
+        }
+    }
+
+    &__time {
+        color: var(--text-1);
+    }
+    &__type {
+        font-weight: 700;
+    }
+    &__message {
+        color: var(--text-0);
+    }
+
+    &__empty {
+        color: var(--text-1);
+        text-align: center;
+        padding: 20px;
+    }
 }

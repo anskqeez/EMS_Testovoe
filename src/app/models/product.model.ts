@@ -1,11 +1,17 @@
 export enum ProductStatus {
-  InQueue = 'В очереди',
-  Checked = 'Проверен',
-  Rejected = 'Отбракован',
+    InQueue = 'in-queue',
+    Checked = 'checked',
+    Rejected = 'rejected',
 }
 
+export const PRODUCT_STATUS_LABELS: Record<ProductStatus, string> = {
+    [ProductStatus.InQueue]: 'В очереди',
+    [ProductStatus.Checked]: 'Проверен',
+    [ProductStatus.Rejected]: 'Отбракован',
+};
+
 export interface Product {
-  id: string;
-  entryTime: number;
-  status: ProductStatus;
+    id: string;
+    status: ProductStatus;
+    entryTime: number;
 }

@@ -7,74 +7,71 @@ import { StorageService } from '../storage/storage.service';
  * Голова очереди (индекс 0) выходит на линию первой
  */
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class WaitingQueueService {
-  private readonly storage = inject(StorageService);
-  private readonly STORAGE_KEY = 'fifo_waiting';
+    private readonly storage = inject(StorageService);
+    private readonly STORAGE_KEY = 'fifo_waiting';
 
-  /** Вместимость буфера: сверх неё добавление новых продуктов блокируется */
-  public readonly MAX_SIZE = 6;
+    public readonly MAX_SIZE = 6;
 
-  private readonly _waiting = signal<Product[]>(this.storage.load<Product[]>(this.STORAGE_KEY, []));
+    private readonly _waiting = signal<Product[]>(
+        this.storage.load<Product[]>(this.STORAGE_KEY, []),
+    );
 
-  public readonly waiting = this._waiting.asReadonly();
+    public readonly waiting = this._waiting.asReadonly();
 
-  public readonly isFull = computed(() => this._waiting().length >= this.MAX_SIZE);
-  public readonly canEnqueue = computed(() => !this.isFull());
-  public readonly isEmpty = computed(() => this._waiting().length === 0);
+    public readonly isFull = computed(() => this._waiting().length >= this.MAX_SIZE);
+    public readonly canEnqueue = computed(() => !this.isFull());
+    public readonly isEmpty = computed(() => this._waiting().length === 0);
 
-  constructor() {
-    this.storage.bind(this.STORAGE_KEY, () => this._waiting());
-  }
-
-  /**
-   * Добавление продукта в конец очереди.
-   * @returns false, если буфер полон и продукт не принят
-   */
-  public enqueue(product: Product): boolean {
-    if (this.isFull()) {
-      return false;
+    constructor() {
+        this.storage.bind(this.STORAGE_KEY, () => this._waiting());
     }
-    this._waiting.update((queue) => [...queue, product]);
-    return true;
-  }
 
-  /**
-   * Возвращает голову очереди без удаления (для «фотоглаза» входа).
-   * @returns продукт либо null, если буфер пуст
-   */
-  public nextToEnter(): Product | null {
-    return this._waiting()[0] ?? null;
-  }
+    public enqueue(product: Product): boolean {
+        if (this.isFull()) {
+            return false;
+        }
 
-  /**
-   * Забирает голову очереди (того, кто ждёт дольше всех).
-   * @returns продукт либо null, если буфер пуст
-   */
-  public dequeue(): Product | null {
-    const head = this.nextToEnter();
+        this._waiting.update((queue) => [...queue, product]);
 
-    if (head) {
-      this._waiting.update((queue) => queue.slice(1));
+        return true;
     }
-    
-    return head;
-  }
 
-  /**
-   * Удаление произвольного продукта из буфера.
-   * @returns true, если продукт найден и удалён
-   */
-  public remove(productId: string): boolean {
-    if (!this.has(productId)) {
-      return false;
+    /**
+     * Возвращает голову очереди без удаления (для «фотоглаза» входа).
+     * @returns продукт либо null, если буфер пуст
+     */
+    public nextToEnter(): Product | null {
+        return this._waiting()[0] ?? null;
     }
-    this._waiting.update((queue) => queue.filter((product) => product.id !== productId));
-    return true;
-  }
 
-  public has(productId: string): boolean {
-    return this._waiting().some((product) => product.id === productId);
-  }
+    /**
+     * Забирает голову очереди (того, кто ждёт дольше всех).
+     * @returns продукт либо null, если буфер пуст
+     */
+    public dequeue(): Product | null {
+        const head = this.nextToEnter();
+
+        if (head) {
+            this._waiting.update((queue) => queue.slice(1));
+        }
+
+        return head;
+    }
+
+    public remove(productId: string): boolean {
+        if (!this.has(productId)) {
+            return false;
+        }
+
+        this._waiting.update((queue) => queue.filter((product) => product.id !== productId));
+        
+        return true;
+    }
+
+    public has(productId: string): boolean {
+        return this._waiting().some((product) => product.id === productId);
+    }
 }

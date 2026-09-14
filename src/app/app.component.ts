@@ -6,15 +6,14 @@ import { ToastsComponent } from './shared/toasts/toasts.component';
 import { ToastNotifierService } from './core/services/toast-notifier.service';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [ControlsComponent, QueueViewComponent, EventLogComponent, ToastsComponent],
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+    selector: 'app-root',
+    standalone: true,
+    imports: [ControlsComponent, QueueViewComponent, EventLogComponent, ToastsComponent],
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
 })
-
 export class AppComponent {
-  private readonly _toastNotifier = inject(ToastNotifierService);
-  
-  public readonly title = 'FIFO Конвейер';
+    private readonly _toastNotifier = inject(ToastNotifierService);
+
+    public readonly title = 'FIFO Конвейер';
 }
